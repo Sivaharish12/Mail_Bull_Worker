@@ -3,8 +3,7 @@ const nodemailer=require('nodemailer')
 
 
 MailQueue.mailQueue.process(async job=> {
-    console.log("Total jobs remaining",
-    await MailQueue.mailQueue.getJobCounts() );
+    console.log(job.data.email);
     return await sendmail(job.data.email);
 });
 
@@ -21,7 +20,9 @@ MailQueue.mailQueue.on('failed', async(job, err) => {
    
 });
 
-function sendmail(email){
+async function sendmail(email){
+    console.log("Total jobs remaining",
+    await MailQueue.mailQueue.getJobCounts() );
     return new Promise((resolve,resject)=>{
         let mailOptions={
             from:'harishsiva2141@gmail.com',
@@ -49,10 +50,10 @@ function sendmail(email){
 
 
 MailQueue.failQueue.process(async job=>{
-    return await sendmail(job.data.email)
+    return await send_fail_mail(job.data.email)
 })
 
-function sendmail(email){
+function send_fail_mail(email){
     return new Promise((resolve,resject)=>{
         let mailOptions={
             from:'harishsiva2141@gmail.com',
